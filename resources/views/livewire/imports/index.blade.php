@@ -62,7 +62,7 @@
     </div>
 
     <div class="rounded-xl border border-dashed border-neutral-300 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-900">
-        <form wire:submit="saveImport" class="flex flex-col gap-4">
+        <form wire:submit.prevent="saveImport" class="flex flex-col gap-4">
             <div>
                 <h2 class="text-base font-semibold text-neutral-900 dark:text-white">
                     Nova importação de base
