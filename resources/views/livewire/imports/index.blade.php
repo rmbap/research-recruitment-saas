@@ -17,6 +17,12 @@
         </button>
     </div>
 
+    @if (session()->has('success'))
+        <div class="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 dark:border-green-900 dark:bg-green-950 dark:text-green-200">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="grid gap-4 md:grid-cols-3">
         <div class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
             <div class="text-sm text-neutral-500 dark:text-neutral-400">
@@ -56,23 +62,41 @@
     </div>
 
     <div class="rounded-xl border border-dashed border-neutral-300 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-900">
-        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <form wire:submit="saveImport" class="flex flex-col gap-4">
             <div>
                 <h2 class="text-base font-semibold text-neutral-900 dark:text-white">
                     Nova importação de base
                 </h2>
                 <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                    No próximo passo, esta área receberá o upload do arquivo e a leitura automática do cabeçalho.
+                    Selecione um arquivo para iniciar o fluxo de importação. No próximo passo, vamos ler o cabeçalho e sugerir o mapeamento das colunas.
                 </p>
             </div>
 
-            <button
-                type="button"
-                class="inline-flex items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
-            >
-                Selecionar arquivo
-            </button>
-        </div>
+            <div class="flex flex-col gap-3 md:flex-row md:items-center">
+                <input
+                    type="file"
+                    wire:model="upload_file"
+                    class="block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-700 file:mr-4 file:rounded-md file:border-0 file:bg-neutral-900 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:file:bg-white dark:file:text-neutral-900 dark:hover:file:bg-neutral-200"
+                />
+
+                <button
+                    type="submit"
+                    class="inline-flex items-center justify-center rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+                >
+                    Enviar arquivo
+                </button>
+            </div>
+
+            <div wire:loading wire:target="upload_file" class="text-sm text-neutral-500 dark:text-neutral-400">
+                Enviando arquivo...
+            </div>
+
+            @error('upload_file')
+                <div class="text-sm text-red-600 dark:text-red-400">
+                    {{ $message }}
+                </div>
+            @enderror
+        </form>
     </div>
 
     <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
