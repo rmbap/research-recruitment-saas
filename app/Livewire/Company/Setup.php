@@ -50,7 +50,7 @@ class Setup extends Component
     public function render()
     {
         return view('livewire.company.setup')
-            ->layout('components.layouts.app', [
+            ->layout('components.layouts.auth', [
                 'title' => 'Configurar empresa',
             ]);
     }
