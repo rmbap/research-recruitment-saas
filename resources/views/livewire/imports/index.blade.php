@@ -62,7 +62,7 @@
     </div>
 
     <div class="rounded-xl border border-dashed border-neutral-300 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-900">
-        <form wire:submit.prevent="saveImport" class="flex flex-col gap-4">
+        <form wire:submit.prevent="saveImport" enctype="multipart/form-data" class="flex flex-col gap-4">
             <div>
                 <h2 class="text-base font-semibold text-neutral-900 dark:text-white">
                     Nova importação de base
@@ -75,17 +75,26 @@
             <div class="flex flex-col gap-3 md:flex-row md:items-center">
                 <input
                     type="file"
-                    wire:model="upload_file"
+                    wire:model.live="upload_file"
+                    accept=".csv,.xls,.xlsx"
                     class="block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-700 file:mr-4 file:rounded-md file:border-0 file:bg-neutral-900 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:file:bg-white dark:file:text-neutral-900 dark:hover:file:bg-neutral-200"
                 />
 
                 <button
                     type="submit"
+                    wire:loading.attr="disabled"
+                    wire:target="upload_file,saveImport"
                     class="inline-flex items-center justify-center rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
                 >
                     Enviar arquivo
                 </button>
             </div>
+
+            @if ($upload_file)
+                <div class="text-sm text-green-700 dark:text-green-400">
+                    Arquivo selecionado: {{ $upload_file->getClientOriginalName() }}
+                </div>
+            @endif
 
             <div wire:loading wire:target="upload_file" class="text-sm text-neutral-500 dark:text-neutral-400">
                 Enviando arquivo...
