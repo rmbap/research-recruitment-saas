@@ -2,10 +2,10 @@
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">
-                Organizations
+                Organizações
             </h1>
             <p class="text-sm text-neutral-500 dark:text-neutral-400">
-                Manage the companies or projects your team recruits for.
+                Gerencie as empresas ou projetos para os quais sua equipe recruta participantes.
             </p>
         </div>
 
@@ -13,7 +13,7 @@
             type="button"
             class="inline-flex items-center rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
         >
-            New organization
+            Nova organização
         </button>
     </div>
 
@@ -21,9 +21,9 @@
         <table class="w-full text-sm">
             <thead class="border-b border-neutral-200 dark:border-neutral-700">
                 <tr class="text-left text-neutral-500 dark:text-neutral-400">
-                    <th class="p-4 font-medium">Name</th>
+                    <th class="p-4 font-medium">Nome</th>
                     <th class="p-4 font-medium">Status</th>
-                    <th class="p-4 font-medium">Created</th>
+                    <th class="p-4 font-medium">Criado em</th>
                 </tr>
             </thead>
 
@@ -43,7 +43,7 @@
                 @empty
                     <tr>
                         <td colspan="3" class="p-8 text-center text-neutral-500 dark:text-neutral-400">
-                            No organizations yet.
+                            Nenhuma organização cadastrada ainda.
                         </td>
                     </tr>
                 @endforelse
