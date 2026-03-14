@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Organizations\Index as OrganizationsIndex;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -16,6 +17,22 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Organizations
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('organizations', OrganizationsIndex::class)
+        ->name('organizations.index');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Settings
+    |--------------------------------------------------------------------------
+    */
+
     Route::redirect('settings', 'settings/profile');
 
     Route::get('settings/profile', Profile::class)->name('profile.edit');
@@ -26,7 +43,10 @@ Route::middleware(['auth'])->group(function () {
         ->middleware(
             when(
                 Features::canManageTwoFactorAuthentication()
-                    && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
+                    && Features::optionEnabled(
+                        Features::twoFactorAuthentication(),
+                        'confirmPassword'
+                    ),
                 ['password.confirm'],
                 [],
             ),
