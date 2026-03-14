@@ -1,7 +1,8 @@
 <?php
 
-use App\Livewire\Organizations\Index as OrganizationsIndex;
 use App\Livewire\Contacts\Index as ContactsIndex;
+use App\Livewire\Imports\Index as ImportsIndex;
+use App\Livewire\Organizations\Index as OrganizationsIndex;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -36,6 +37,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('contacts', ContactsIndex::class)
         ->name('contacts.index');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Imports
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('imports', ImportsIndex::class)
+        ->name('imports.index');
 
     /*
     |--------------------------------------------------------------------------
