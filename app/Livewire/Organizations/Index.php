@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Organizations;
 
-use Livewire\Component;
 use App\Models\Organization;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Index extends Component
 {
@@ -15,7 +15,9 @@ class Index extends Component
             ->get();
 
         return view('livewire.organizations.index', [
-            'organizations' => $organizations
+            'organizations' => $organizations,
+        ])->layout('components.layouts.app', [
+            'title' => 'Organizations',
         ]);
     }
 }
