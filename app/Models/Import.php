@@ -15,6 +15,7 @@ class Import extends Model
         'original_filename',
         'stored_filename',
         'file_type',
+        'mapping_json',
         'status',
         'total_rows',
         'valid_rows',
@@ -26,6 +27,7 @@ class Import extends Model
     protected function casts(): array
     {
         return [
+            'mapping_json' => 'array',
             'processed_at' => 'datetime',
         ];
     }
