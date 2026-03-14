@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ImportUploadController;
+use App\Livewire\Company\Setup;
 use App\Livewire\Contacts\Index as ContactsIndex;
 use App\Livewire\Imports\Index as ImportsIndex;
 use App\Livewire\Organizations\Index as OrganizationsIndex;
@@ -20,6 +21,15 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Company Setup
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('company/setup', Setup::class)
+        ->name('company.setup');
 
     /*
     |--------------------------------------------------------------------------
