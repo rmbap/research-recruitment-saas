@@ -1,3 +1,7 @@
+@props([
+    'recentImports' => collect(),
+])
+
 <div class="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
     <div>
         <h2 class="text-base font-semibold text-neutral-900 dark:text-white">
@@ -36,11 +40,39 @@
                 </thead>
 
                 <tbody class="divide-y divide-neutral-200 bg-white dark:divide-neutral-800 dark:bg-neutral-900">
-                    <tr>
-                        <td colspan="6" class="px-4 py-10 text-center text-sm text-neutral-500 dark:text-neutral-400">
-                            Nenhuma importação processada ainda.
-                        </td>
-                    </tr>
+                    @forelse ($recentImports as $import)
+                        <tr>
+                            <td class="px-4 py-4 text-sm text-neutral-900 dark:text-white">
+                                {{ $import->original_filename ?? $import->file_name ?? 'Arquivo sem nome' }}
+                            </td>
+
+                            <td class="px-4 py-4 text-sm text-neutral-600 dark:text-neutral-300">
+                                {{ $import->total_rows ?? 0 }}
+                            </td>
+
+                            <td class="px-4 py-4 text-sm text-neutral-600 dark:text-neutral-300">
+                                {{ $import->valid_rows ?? 0 }}
+                            </td>
+
+                            <td class="px-4 py-4 text-sm text-neutral-600 dark:text-neutral-300">
+                                {{ $import->suspicious_rows ?? 0 }}
+                            </td>
+
+                            <td class="px-4 py-4 text-sm text-neutral-600 dark:text-neutral-300">
+                                {{ $import->status ?? '-' }}
+                            </td>
+
+                            <td class="px-4 py-4 text-sm text-neutral-600 dark:text-neutral-300">
+                                {{ optional($import->created_at)->format('d/m/Y H:i') }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-4 py-10 text-center text-sm text-neutral-500 dark:text-neutral-400">
+                                Nenhuma importação processada ainda.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
