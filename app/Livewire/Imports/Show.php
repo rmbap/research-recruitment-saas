@@ -13,6 +13,10 @@ class Show extends Component
 
     public string $filter = 'all';
 
+    public ?ImportRow $editingRow = null;
+
+    public array $editingData = [];
+
     public function mount($id)
     {
         $this->import = Import::where('company_id', Auth::user()->company_id)
@@ -22,6 +26,35 @@ class Show extends Component
     public function setFilter($status)
     {
         $this->filter = $status;
+    }
+
+    public function editRow($rowId)
+    {
+        $row = ImportRow::findOrFail($rowId);
+
+        $this->editingRow = $row;
+        $this->editingData = $row->raw_data ?? [];
+    }
+
+    public function saveRow()
+    {
+        if (!$this->editingRow) {
+            return;
+        }
+
+        $this->editingRow->update([
+            'raw_data' => $this->editingData,
+            'status' => 'valid'
+        ]);
+
+        $this->editingRow = null;
+        $this->editingData = [];
+    }
+
+    public function cancelEdit()
+    {
+        $this->editingRow = null;
+        $this->editingData = [];
     }
 
     public function render()
