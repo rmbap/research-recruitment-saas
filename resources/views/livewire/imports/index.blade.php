@@ -80,7 +80,7 @@
                     Nova importação de base
                 </h2>
                 <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                    Selecione um arquivo para iniciar o fluxo de importação. No próximo passo, vamos ler o cabeçalho e sugerir o mapeamento das colunas.
+                    Selecione um arquivo para iniciar o fluxo de importação. No próximo passo, vamos ler o cabeçalho, sugerir o mapeamento das colunas e revisar os dados encontrados.
                 </p>
             </div>
 
@@ -120,6 +120,7 @@
                     <th class="p-4 font-medium">Status</th>
                     <th class="p-4 font-medium">Linhas</th>
                     <th class="p-4 font-medium">Válidas</th>
+                    <th class="p-4 font-medium">Suspeitas</th>
                     <th class="p-4 font-medium">Inválidas</th>
                     <th class="p-4 font-medium">Processada em</th>
                 </tr>
@@ -129,7 +130,9 @@
                 @forelse($imports as $import)
                     <tr class="border-b border-neutral-100 dark:border-neutral-800">
                         <td class="p-4 font-medium text-neutral-900 dark:text-white">
-                            {{ $import->original_filename }}
+                            <a href="{{ route('imports.show', $import->id) }}" class="underline decoration-neutral-300 underline-offset-4 hover:text-neutral-700 dark:hover:text-neutral-200">
+                                {{ $import->original_filename }}
+                            </a>
                         </td>
                         <td class="p-4 text-neutral-600 dark:text-neutral-300">
                             {{ ucfirst($import->status) }}
@@ -141,6 +144,9 @@
                             {{ $import->valid_rows }}
                         </td>
                         <td class="p-4 text-neutral-600 dark:text-neutral-300">
+                            {{ $import->suspicious_rows }}
+                        </td>
+                        <td class="p-4 text-neutral-600 dark:text-neutral-300">
                             {{ $import->invalid_rows }}
                         </td>
                         <td class="p-4 text-neutral-600 dark:text-neutral-300">
@@ -149,7 +155,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="p-8 text-center text-neutral-500 dark:text-neutral-400">
+                        <td colspan="7" class="p-8 text-center text-neutral-500 dark:text-neutral-400">
                             Nenhuma importação realizada ainda.
                         </td>
                     </tr>
