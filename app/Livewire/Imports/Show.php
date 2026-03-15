@@ -4,6 +4,7 @@ namespace App\Livewire\Imports;
 
 use App\Models\Import;
 use App\Models\ImportRow;
+use App\Services\ImportToContactsService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -12,10 +13,6 @@ class Show extends Component
     public Import $import;
 
     public string $filter = 'all';
-
-    public ?ImportRow $editingRow = null;
-
-    public array $editingData = [];
 
     public function mount($id)
     {
@@ -28,33 +25,14 @@ class Show extends Component
         $this->filter = $status;
     }
 
-    public function editRow($rowId)
+    public function importValidRows(ImportToContactsService $service)
     {
-        $row = ImportRow::findOrFail($rowId);
+        $count = $service->importValidRows($this->import);
 
-        $this->editingRow = $row;
-        $this->editingData = $row->raw_data ?? [];
-    }
-
-    public function saveRow()
-    {
-        if (!$this->editingRow) {
-            return;
-        }
-
-        $this->editingRow->update([
-            'raw_data' => $this->editingData,
-            'status' => 'valid'
-        ]);
-
-        $this->editingRow = null;
-        $this->editingData = [];
-    }
-
-    public function cancelEdit()
-    {
-        $this->editingRow = null;
-        $this->editingData = [];
+        session()->flash(
+            'success',
+            "{$count} contatos foram importados com sucesso."
+        );
     }
 
     public function render()
