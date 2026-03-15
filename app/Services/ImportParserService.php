@@ -50,6 +50,7 @@ class ImportParserService
         $header = array_map(function ($column) {
             $column = (string) $column;
             $column = preg_replace('/^\xEF\xBB\xBF/', '', $column);
+
             return trim($column);
         }, $header);
 
@@ -88,6 +89,8 @@ class ImportParserService
             'total_rows' => $totalRows,
             'status' => 'processing',
         ]);
+
+        app(ImportValidationService::class)->validate($import);
     }
 
     private function isEmptyRow(array $row): bool
