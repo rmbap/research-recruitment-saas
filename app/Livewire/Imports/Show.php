@@ -14,6 +14,10 @@ class Show extends Component
 
     public string $filter = 'all';
 
+    public ?ImportRow $editingRow = null;
+
+    public array $editingData = [];
+
     public function mount($id)
     {
         $this->import = Import::where('company_id', Auth::user()->company_id)
@@ -25,14 +29,58 @@ class Show extends Component
         $this->filter = $status;
     }
 
+    public function editRow($rowId)
+    {
+        $row = ImportRow::findOrFail($rowId);
+
+        $this->editingRow = $row;
+        $this->editingData = $row->raw_data ?? [];
+    }
+
+    public function saveRow()
+    {
+        if (! $this->editingRow) {
+            return;
+        }
+
+        $this->editingRow->update([
+            'raw_data' => $this->editingData,
+            'status' => 'valid',
+        ]);
+
+        $this->editingRow = null;
+        $this->editingData = [];
+
+        $this->refreshImportCounters();
+    }
+
+    public function cancelEdit()
+    {
+        $this->editingRow = null;
+        $this->editingData = [];
+    }
+
     public function importValidRows(ImportToContactsService $service)
     {
         $count = $service->importValidRows($this->import);
+
+        $this->import->refresh();
 
         session()->flash(
             'success',
             "{$count} contatos foram importados com sucesso."
         );
+    }
+
+    private function refreshImportCounters(): void
+    {
+        $this->import->update([
+            'valid_rows' => ImportRow::where('import_id', $this->import->id)->where('status', 'valid')->count(),
+            'suspicious_rows' => ImportRow::where('import_id', $this->import->id)->where('status', 'suspicious')->count(),
+            'invalid_rows' => ImportRow::where('import_id', $this->import->id)->where('status', 'invalid')->count(),
+        ]);
+
+        $this->import->refresh();
     }
 
     public function render()
