@@ -87,12 +87,13 @@
                     </td>
 
                     <td class="p-2">
-                        <button
-                            wire:click="editRow({{ $row->id }})"
-                            class="text-sm text-blue-600 underline"
+                        <a
+                            href="#"
+                            wire:click.prevent="editRow({{ $row->id }})"
+                            class="text-sm text-blue-600 underline cursor-pointer"
                         >
                             Editar
-                        </button>
+                        </a>
                     </td>
 
                 </tr>
@@ -134,6 +135,7 @@
 
             <div class="mt-4 flex gap-2">
                 <button
+                    type="button"
                     wire:click="saveRow"
                     class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
                 >
@@ -141,6 +143,7 @@
                 </button>
 
                 <button
+                    type="button"
                     wire:click="cancelEdit"
                     class="rounded-lg bg-neutral-200 px-4 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-300"
                 >
