@@ -31,7 +31,8 @@ class Show extends Component
 
     public function editRow($rowId)
     {
-        $row = ImportRow::findOrFail($rowId);
+        $row = ImportRow::where('import_id', $this->import->id)
+            ->findOrFail($rowId);
 
         $this->editingRow = $row;
         $this->editingData = $row->raw_data ?? [];
@@ -62,6 +63,26 @@ class Show extends Component
 
     public function importValidRows(ImportToContactsService $service)
     {
+        $this->refreshImportCounters();
+
+        if ($this->import->status === 'completed') {
+            session()->flash(
+                'success',
+                'Esta importação já foi concluída anteriormente.'
+            );
+
+            return;
+        }
+
+        if ((int) $this->import->valid_rows === 0) {
+            session()->flash(
+                'success',
+                'Não há linhas válidas para importar.'
+            );
+
+            return;
+        }
+
         $count = $service->importValidRows($this->import);
 
         $this->import->refresh();
@@ -75,9 +96,15 @@ class Show extends Component
     private function refreshImportCounters(): void
     {
         $this->import->update([
-            'valid_rows' => ImportRow::where('import_id', $this->import->id)->where('status', 'valid')->count(),
-            'suspicious_rows' => ImportRow::where('import_id', $this->import->id)->where('status', 'suspicious')->count(),
-            'invalid_rows' => ImportRow::where('import_id', $this->import->id)->where('status', 'invalid')->count(),
+            'valid_rows' => ImportRow::where('import_id', $this->import->id)
+                ->where('status', 'valid')
+                ->count(),
+            'suspicious_rows' => ImportRow::where('import_id', $this->import->id)
+                ->where('status', 'suspicious')
+                ->count(),
+            'invalid_rows' => ImportRow::where('import_id', $this->import->id)
+                ->where('status', 'invalid')
+                ->count(),
         ]);
 
         $this->import->refresh();
