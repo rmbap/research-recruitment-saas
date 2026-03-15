@@ -12,6 +12,7 @@ class DashboardController extends Controller
         $totalContacts = 0;
         $validContacts = 0;
         $inconsistentContacts = 0;
+        $qualityRate = 0;
 
         if (DB::getSchemaBuilder()->hasTable('contacts')) {
             $totalContacts = DB::table('contacts')->count();
@@ -27,12 +28,16 @@ class DashboardController extends Controller
                 ->count();
         }
 
+        if ($totalContacts > 0) {
+            $qualityRate = (int) round(($validContacts / $totalContacts) * 100);
+        }
+
         return view('dashboard', [
             'stats' => [
                 'total_contacts' => $totalContacts,
                 'valid_contacts' => $validContacts,
                 'inconsistent_contacts' => $inconsistentContacts,
-                'quality_rate' => 0,
+                'quality_rate' => $qualityRate,
             ],
             'studies' => [
                 'draft' => 0,
