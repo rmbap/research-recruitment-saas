@@ -11,6 +11,7 @@ class DashboardController extends Controller
     {
         $totalContacts = 0;
         $validContacts = 0;
+        $inconsistentContacts = 0;
 
         if (DB::getSchemaBuilder()->hasTable('contacts')) {
             $totalContacts = DB::table('contacts')->count();
@@ -20,11 +21,17 @@ class DashboardController extends Controller
                 ->count();
         }
 
+        if (DB::getSchemaBuilder()->hasTable('import_rows')) {
+            $inconsistentContacts = DB::table('import_rows')
+                ->where('status', 'suspicious')
+                ->count();
+        }
+
         return view('dashboard', [
             'stats' => [
                 'total_contacts' => $totalContacts,
                 'valid_contacts' => $validContacts,
-                'inconsistent_contacts' => 0,
+                'inconsistent_contacts' => $inconsistentContacts,
                 'quality_rate' => 0,
             ],
             'studies' => [
