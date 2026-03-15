@@ -24,7 +24,7 @@
 
         </div>
 
-        <x-dashboard.imports-table />
+        <x-dashboard.imports-table :recent-imports="$recentImports" />
 
     </div>
 
