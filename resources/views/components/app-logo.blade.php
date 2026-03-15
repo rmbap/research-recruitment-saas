@@ -1,3 +1,3 @@
-<div style="color:red; font-size:20px; font-weight:bold;">
-    TESTE LOGO
+<div class="flex items-center">
+    <img src="{{ asset('images/logo-adscope.png?v=2') }}" alt="Adscope" class="h-16 w-auto">
 </div>
