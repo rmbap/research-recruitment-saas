@@ -16,7 +16,7 @@
             </p>
 
             <p class="mt-3 text-2xl font-semibold text-neutral-900 dark:text-white">
-                0
+                {{ $studies['draft'] }}
             </p>
         </div>
 
@@ -26,7 +26,7 @@
             </p>
 
             <p class="mt-3 text-2xl font-semibold text-neutral-900 dark:text-white">
-                0
+                {{ $studies['recruiting'] }}
             </p>
         </div>
 
@@ -36,7 +36,7 @@
             </p>
 
             <p class="mt-3 text-2xl font-semibold text-neutral-900 dark:text-white">
-                0
+                {{ $studies['fieldwork'] }}
             </p>
         </div>
 
@@ -46,7 +46,7 @@
             </p>
 
             <p class="mt-3 text-2xl font-semibold text-neutral-900 dark:text-white">
-                0
+                {{ $studies['completed'] }}
             </p>
         </div>
     </div>
