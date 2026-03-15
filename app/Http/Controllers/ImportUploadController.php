@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Import;
+use App\Services\ImportParserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ImportUploadController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request, ImportParserService $parser)
     {
         $request->validate([
             'upload_file' => 'required|file|mimes:csv,xls,xlsx|max:10240',
@@ -27,7 +28,7 @@ class ImportUploadController extends Controller
 
         $path = $file->storeAs('imports', $filename, 'local');
 
-        Import::create([
+        $import = Import::create([
             'company_id' => Auth::user()->company_id,
             'uploaded_by' => Auth::id(),
             'original_filename' => $file->getClientOriginalName(),
@@ -36,8 +37,10 @@ class ImportUploadController extends Controller
             'status' => 'pending',
         ]);
 
+        $parser->parse($import);
+
         return redirect()
             ->route('imports.index')
-            ->with('success', 'Arquivo enviado com sucesso.');
+            ->with('success', 'Arquivo enviado e processado com sucesso.');
     }
 }
