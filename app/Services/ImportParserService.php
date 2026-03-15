@@ -21,17 +21,27 @@ class ImportParserService
             return;
         }
 
-        $header = fgetcsv($handle);
+        // tenta ler cabeçalho com separador comum
+        $header = fgetcsv($handle, 0, ';');
+
+        if (!$header || count($header) <= 1) {
+            rewind($handle);
+            $header = fgetcsv($handle, 0, ',');
+        }
 
         $rowNumber = 1;
         $totalRows = 0;
 
-        while (($row = fgetcsv($handle)) !== false) {
+        while (($row = fgetcsv($handle, 0, ';')) !== false) {
+
+            if (count($row) <= 1) {
+                $row = str_getcsv($row[0] ?? '', ',');
+            }
 
             $data = [];
 
             foreach ($header as $index => $column) {
-                $data[$column] = $row[$index] ?? null;
+                $data[trim($column)] = $row[$index] ?? null;
             }
 
             ImportRow::create([
