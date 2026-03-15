@@ -14,6 +14,13 @@ class DashboardController extends Controller
         $inconsistentContacts = 0;
         $qualityRate = 0;
 
+        $studies = [
+            'draft' => 0,
+            'recruiting' => 0,
+            'fieldwork' => 0,
+            'completed' => 0,
+        ];
+
         if (DB::getSchemaBuilder()->hasTable('contacts')) {
             $totalContacts = DB::table('contacts')->count();
 
@@ -32,6 +39,13 @@ class DashboardController extends Controller
             $qualityRate = (int) round(($validContacts / $totalContacts) * 100);
         }
 
+        if (DB::getSchemaBuilder()->hasTable('studies')) {
+            $studies['draft'] = DB::table('studies')->where('status', 'draft')->count();
+            $studies['recruiting'] = DB::table('studies')->where('status', 'recruiting')->count();
+            $studies['fieldwork'] = DB::table('studies')->where('status', 'fieldwork')->count();
+            $studies['completed'] = DB::table('studies')->where('status', 'completed')->count();
+        }
+
         return view('dashboard', [
             'stats' => [
                 'total_contacts' => $totalContacts,
@@ -39,12 +53,7 @@ class DashboardController extends Controller
                 'inconsistent_contacts' => $inconsistentContacts,
                 'quality_rate' => $qualityRate,
             ],
-            'studies' => [
-                'draft' => 0,
-                'recruiting' => 0,
-                'fieldwork' => 0,
-                'completed' => 0,
-            ],
+            'studies' => $studies,
             'alerts' => [],
             'recentImports' => [],
         ]);
