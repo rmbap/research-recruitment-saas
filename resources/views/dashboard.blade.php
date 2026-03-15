@@ -17,7 +17,7 @@
         <div class="grid gap-4 xl:grid-cols-3">
 
             <div class="xl:col-span-2">
-                <x-dashboard.studies-overview />
+                <x-dashboard.studies-overview :studies="$studies" />
             </div>
 
             <x-dashboard.alerts-panel />
