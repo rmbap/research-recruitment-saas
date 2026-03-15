@@ -22,6 +22,7 @@ class DashboardController extends Controller
         ];
 
         $recentImports = [];
+        $alerts = [];
 
         if (DB::getSchemaBuilder()->hasTable('contacts')) {
             $totalContacts = DB::table('contacts')->count();
@@ -53,6 +54,23 @@ class DashboardController extends Controller
                 ->orderByDesc('created_at')
                 ->limit(5)
                 ->get();
+
+            $latestImport = DB::table('imports')
+                ->orderByDesc('created_at')
+                ->first();
+
+            if ($latestImport) {
+                $suspiciousRows = (int) ($latestImport->suspicious_rows ?? 0);
+                $invalidRows = (int) ($latestImport->invalid_rows ?? 0);
+                $problemRows = $suspiciousRows + $invalidRows;
+
+                if ($problemRows > 0) {
+                    $alerts[] = [
+                        'title' => 'Importação com inconsistências',
+                        'message' => "A importação mais recente possui {$problemRows} registros com problemas que exigem revisão.",
+                    ];
+                }
+            }
         }
 
         return view('dashboard', [
@@ -63,7 +81,7 @@ class DashboardController extends Controller
                 'quality_rate' => $qualityRate,
             ],
             'studies' => $studies,
-            'alerts' => [],
+            'alerts' => $alerts,
             'recentImports' => $recentImports,
         ]);
     }
