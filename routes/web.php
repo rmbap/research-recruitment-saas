@@ -4,6 +4,7 @@ use App\Http\Controllers\ImportUploadController;
 use App\Livewire\Company\Setup;
 use App\Livewire\Contacts\Index as ContactsIndex;
 use App\Livewire\Imports\Index as ImportsIndex;
+use App\Livewire\Imports\Show as ImportsShow;
 use App\Livewire\Organizations\Index as OrganizationsIndex;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
@@ -57,6 +58,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('imports', ImportsIndex::class)
         ->name('imports.index');
+
+    Route::get('imports/{id}', ImportsShow::class)
+        ->name('imports.show');
 
     Route::post('imports/upload', [ImportUploadController::class, 'store'])
         ->name('imports.upload');
