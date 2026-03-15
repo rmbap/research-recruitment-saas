@@ -21,6 +21,8 @@ class DashboardController extends Controller
             'completed' => 0,
         ];
 
+        $recentImports = [];
+
         if (DB::getSchemaBuilder()->hasTable('contacts')) {
             $totalContacts = DB::table('contacts')->count();
 
@@ -46,6 +48,13 @@ class DashboardController extends Controller
             $studies['completed'] = DB::table('studies')->where('status', 'completed')->count();
         }
 
+        if (DB::getSchemaBuilder()->hasTable('imports')) {
+            $recentImports = DB::table('imports')
+                ->orderByDesc('created_at')
+                ->limit(5)
+                ->get();
+        }
+
         return view('dashboard', [
             'stats' => [
                 'total_contacts' => $totalContacts,
@@ -55,7 +64,7 @@ class DashboardController extends Controller
             ],
             'studies' => $studies,
             'alerts' => [],
-            'recentImports' => [],
+            'recentImports' => $recentImports,
         ]);
     }
 }
