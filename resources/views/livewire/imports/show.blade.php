@@ -1,13 +1,30 @@
 <div class="space-y-6">
 
-    <div>
-        <h1 class="text-2xl font-semibold">
-            Revisão da importação
-        </h1>
+    @if (session()->has('success'))
+        <div class="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 dark:border-green-900 dark:bg-green-950 dark:text-green-200">
+            {{ session('success') }}
+        </div>
+    @endif
 
-        <p class="text-sm text-neutral-500">
-            {{ $import->original_filename }}
-        </p>
+    <div class="flex items-center justify-between">
+
+        <div>
+            <h1 class="text-2xl font-semibold">
+                Revisão da importação
+            </h1>
+
+            <p class="text-sm text-neutral-500">
+                {{ $import->original_filename }}
+            </p>
+        </div>
+
+        <button
+            wire:click="importValidRows"
+            class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+        >
+            Importar válidos
+        </button>
+
     </div>
 
     <div class="flex gap-2">
