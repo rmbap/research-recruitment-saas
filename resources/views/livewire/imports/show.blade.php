@@ -49,11 +49,11 @@
 
                 <tr class="border-t">
 
-                    <td class="p-2">
+                    <td class="p-2 align-top">
                         {{ $row->row_number }}
                     </td>
 
-                    <td class="p-2 text-xs">
+                    <td class="p-2 text-xs align-top">
 
                         @foreach($row->raw_data as $key => $value)
 
@@ -66,7 +66,7 @@
 
                     </td>
 
-                    <td class="p-2">
+                    <td class="p-2 align-top">
 
                         @if($row->status === 'valid')
                             <span class="text-green-600">✓ válido</span>
@@ -86,7 +86,7 @@
 
                     </td>
 
-                    <td class="p-2">
+                    <td class="p-2 align-top">
                         <a
                             href="#"
                             wire:click.prevent="editRow({{ $row->id }})"
@@ -107,48 +107,60 @@
     </div>
 
     @if($editingRow)
-        <div class="rounded-xl border bg-white p-4 shadow-sm">
-            <div class="mb-4">
-                <h2 class="text-lg font-semibold">
-                    Editar linha {{ $editingRow->row_number }}
-                </h2>
-                <p class="text-sm text-neutral-500">
-                    Ajuste os campos abaixo e salve para marcar a linha como válida.
-                </p>
-            </div>
-
-            <div class="grid gap-4 md:grid-cols-2">
-                @foreach($editingData as $key => $value)
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+            <div class="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+                <div class="mb-4 flex items-start justify-between gap-4">
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-neutral-700">
-                            {{ $key }}
-                        </label>
-
-                        <input
-                            type="text"
-                            wire:model="editingData.{{ $key }}"
-                            class="w-full rounded-lg border px-3 py-2 text-sm"
-                        >
+                        <h2 class="text-lg font-semibold">
+                            Editar linha {{ $editingRow->row_number }}
+                        </h2>
+                        <p class="text-sm text-neutral-500">
+                            Ajuste os campos abaixo e salve para marcar a linha como válida.
+                        </p>
                     </div>
-                @endforeach
-            </div>
 
-            <div class="mt-4 flex gap-2">
-                <button
-                    type="button"
-                    wire:click="saveRow"
-                    class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
-                >
-                    Salvar
-                </button>
+                    <button
+                        type="button"
+                        wire:click="cancelEdit"
+                        class="rounded-lg px-3 py-1 text-sm text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700"
+                    >
+                        Fechar
+                    </button>
+                </div>
 
-                <button
-                    type="button"
-                    wire:click="cancelEdit"
-                    class="rounded-lg bg-neutral-200 px-4 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-300"
-                >
-                    Cancelar
-                </button>
+                <div class="grid gap-4 md:grid-cols-2">
+                    @foreach($editingData as $key => $value)
+                        <div>
+                            <label class="mb-1 block text-sm font-medium text-neutral-700">
+                                {{ $key }}
+                            </label>
+
+                            <input
+                                type="text"
+                                wire:model="editingData.{{ $key }}"
+                                class="w-full rounded-lg border px-3 py-2 text-sm"
+                            >
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="mt-6 flex gap-2">
+                    <button
+                        type="button"
+                        wire:click="saveRow"
+                        class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+                    >
+                        Salvar
+                    </button>
+
+                    <button
+                        type="button"
+                        wire:click="cancelEdit"
+                        class="rounded-lg bg-neutral-200 px-4 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-300"
+                    >
+                        Cancelar
+                    </button>
+                </div>
             </div>
         </div>
     @endif
