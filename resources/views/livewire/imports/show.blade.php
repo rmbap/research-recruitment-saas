@@ -27,6 +27,36 @@
 
     </div>
 
+    <div class="grid gap-4 md:grid-cols-4">
+        <div class="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
+            <div class="text-sm text-neutral-500">Total de linhas</div>
+            <div class="mt-2 text-2xl font-semibold text-neutral-900">
+                {{ $import->total_rows }}
+            </div>
+        </div>
+
+        <div class="rounded-xl border border-green-200 bg-green-50 p-4 shadow-sm">
+            <div class="text-sm text-green-700">Válidas</div>
+            <div class="mt-2 text-2xl font-semibold text-green-800">
+                {{ $import->valid_rows }}
+            </div>
+        </div>
+
+        <div class="rounded-xl border border-yellow-200 bg-yellow-50 p-4 shadow-sm">
+            <div class="text-sm text-yellow-700">Inconsistentes</div>
+            <div class="mt-2 text-2xl font-semibold text-yellow-800">
+                {{ $import->suspicious_rows }}
+            </div>
+        </div>
+
+        <div class="rounded-xl border border-red-200 bg-red-50 p-4 shadow-sm">
+            <div class="text-sm text-red-700">Inválidas</div>
+            <div class="mt-2 text-2xl font-semibold text-red-800">
+                {{ $import->invalid_rows }}
+            </div>
+        </div>
+    </div>
+
     <div class="flex gap-2">
 
         <button wire:click="setFilter('all')" class="px-3 py-1 border rounded">
@@ -38,7 +68,7 @@
         </button>
 
         <button wire:click="setFilter('suspicious')" class="px-3 py-1 border rounded bg-yellow-50">
-            Suspeitos
+            Inconsistentes
         </button>
 
         <button wire:click="setFilter('invalid')" class="px-3 py-1 border rounded bg-red-50">
@@ -90,7 +120,7 @@
                         @endif
 
                         @if($row->status === 'suspicious')
-                            <span class="text-yellow-600">⚠ suspeito</span>
+                            <span class="text-yellow-600">⚠ inconsistente</span>
                         @endif
 
                         @if($row->status === 'invalid')
