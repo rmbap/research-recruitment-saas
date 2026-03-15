@@ -12,7 +12,7 @@
             </p>
         </div>
 
-        <x-dashboard.stats-cards />
+        <x-dashboard.stats-cards :stats="$stats" />
 
         <div class="grid gap-4 xl:grid-cols-3">
 
