@@ -58,8 +58,27 @@
                                 {{ $import->suspicious_rows ?? 0 }}
                             </td>
 
-                            <td class="px-4 py-4 text-sm text-neutral-600 dark:text-neutral-300">
-                                {{ $import->status ?? '-' }}
+                            <td class="px-4 py-4 text-sm">
+                                @if($import->status === 'processed')
+                                    <span class="inline-flex items-center rounded-lg bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
+                                        Processado
+                                    </span>
+
+                                @elseif($import->status === 'pending')
+                                    <span class="inline-flex items-center rounded-lg bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-700">
+                                        Pendente
+                                    </span>
+
+                                @elseif($import->status === 'failed')
+                                    <span class="inline-flex items-center rounded-lg bg-red-100 px-2 py-1 text-xs font-medium text-red-700">
+                                        Falhou
+                                    </span>
+
+                                @else
+                                    <span class="inline-flex items-center rounded-lg bg-neutral-100 px-2 py-1 text-xs font-medium text-neutral-600">
+                                        {{ $import->status ?? '-' }}
+                                    </span>
+                                @endif
                             </td>
 
                             <td class="px-4 py-4 text-sm text-neutral-600 dark:text-neutral-300">
